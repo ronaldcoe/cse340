@@ -3,4 +3,82 @@
 *:before,
 *:after {
   box-sizing: border-box;
+  margin: 0;
+}
+body {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+#top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0px;
+}
+#tools a{
+  color: black;
+}
+nav ul {
+  display: flex;
+  justify-content: space-around;
+  background-color: rgb(0, 0, 0);
+  
+}
+nav ul li {
+  list-style: none;
+  padding: 20px;
+  font-weight: bold;
+  color: white;
+}
+nav ul li:hover {
+  background-color: red;
+  cursor: pointer;
+}
+a {
+  text-decoration: none;
+}
+.siteName a{
+  font-size: 30px;
+  color: red;
+  font-weight: bolder;
+}
+.banner {
+  height: 600px;
+  max-width: 1200px;
+
+  background-image: url('../images/vehicles/mclaren.jpg');
+  background-position-y: -200px;
+  background-position-x: -100px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 100px 1fr;
+  align-items: center;
+}
+
+.banner h2 {
+  font-size: 40px;
+  text-align: center;
+  padding-top: 20px;
+}
+.bannerContent {
+ padding: 30px;
+ background-color: rgba(0, 0, 0, 0.678);
+ width: 400px;
+ color: white  ;
+
+}
+.bannerContent h2 {
+  text-align: left;
+}
+.banner button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  margin-top: 10px;
 }
