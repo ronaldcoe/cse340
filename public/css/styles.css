@@ -9,24 +9,19 @@ body {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-#wrapper {
-  max-width: 1200px;
-  margin: 0 auto;
-}
+
+
 #top-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 0px;
 }
-#tools a{
-  color: black;
-}
 nav ul {
   display: flex;
   justify-content: space-around;
   background-color: rgb(0, 0, 0);
-  
+  padding: 0;
 }
 nav ul li {
   list-style: none;
@@ -41,44 +36,129 @@ nav ul li:hover {
 a {
   text-decoration: none;
 }
+.banner {
+  height: 60vh;
+  max-width: 1200px;
+
+  background-image: url('../images/vehicles/mclaren.jpg');
+  background-size:cover;
+
+
+}
+.details {
+  max-width: 100%;
+}
+#upgrades {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
+  gap: 60px;
+  margin-top: 30px;
+}
+.details {
+  grid-row: 2/3;
+}
+nav li {
+  font-size: 12px;
+}
+#wrapper {
+  padding: 5px;
+}
 .siteName a{
   font-size: 30px;
   color: red;
   font-weight: bolder;
 }
-.banner {
-  height: 600px;
-  max-width: 1200px;
-
-  background-image: url('../images/vehicles/mclaren.jpg');
-  background-position-y: -200px;
-  background-position-x: -100px;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 100px 1fr;
-  align-items: center;
+#tools a{
+  color: black;
 }
-
+.banner h2 {
+  font-size: 30px;
+}
+.banner button {
+  background-color: rgb(179, 0, 0);
+  color: white;
+  border: none;
+  padding: 10px;
+  display: block;
+  cursor: pointer;
+  margin: 10px auto;
+}
 .banner h2 {
   font-size: 40px;
   text-align: center;
   padding-top: 20px;
+
 }
 .bannerContent {
  padding: 30px;
  background-color: rgba(0, 0, 0, 0.678);
  width: 400px;
  color: white  ;
-
+  margin: 0 auto;
+ 
 }
 .bannerContent h2 {
   text-align: left;
+  font-size: 20px;
 }
-.banner button {
-  background-color: red;
-  color: white;
-  border: none;
+.upgradesImages div img {
+  width: 150px;
+}
+.upgradesImages {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+.reviews ul {
+  margin-top: 20px;
+}
+footer {
+  margin: 60px auto;
   padding: 10px;
-  cursor: pointer;
-  margin-top: 10px;
+}
+
+@media screen and (min-width:840px) {
+  #wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .details {
+    grid-column: 1/2;
+    grid-row: 1/2;
+  }
+  .reviews {
+    grid-column: 2/3;
+  }
+  
+  
+  #upgrades {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    justify-content: center;
+   
+    text-align: center;
+  }
+  #upgrades h2 {
+    margin-bottom: 30px;
+  }
+  #upgrades li {
+    text-align: left;
+  }
+  
+  .upgradesImages div img {
+    width: 200px ;
+  }
+  
+  
+  footer {
+    max-width: 1200px;
+    
+  }
+  
 }
