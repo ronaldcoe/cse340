@@ -56,6 +56,32 @@ Util.buildClassificationGrid = async function(data){
   }
   return grid
 }
+Util.buildByCarId = async function(data) {
+  let grid
+  if(data.length > 0) {
+    
+    grid = '<div class="car_display">'
+    grid += `<img src="${data[0].inv_image}" alt="${data[0].inv_model}">`
+    grid += `<div><h2>${data[0].inv_year} ${data[0].inv_make} ${data[0].inv_model}</h2>
+    <p><b>Price: $${new Intl.NumberFormat('en-US').format(data[0].inv_price)}</b></p>
+    <p><b>Description:</b> ${data[0].inv_description}</p>
+    <p><b>Color:</b> ${data[0].inv_color}</p>
+    <p><b>Miles:</b> ${data[0].inv_miles}<p></div></div>
+    `
+ 
+  } else {
+    grid = "<p>No found<p>"
+  }
+  return grid
+}
+
+
+/* ****************************************
+ * Middleware For Handling Errors
+ * Wrap other function in this for 
+ * General Error Handling
+ **************************************** */
+Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
 
 

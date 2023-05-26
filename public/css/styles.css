@@ -23,12 +23,22 @@ nav ul {
   background-color: rgb(0, 0, 0);
   padding: 0;
 }
+nav ul li a {
+  display: block;
+  height: 100%;
+  padding: 20px;
+  color: white;
+}
 nav ul li {
   list-style: none;
-  padding: 20px;
+  
   font-weight: bold;
   color: white;
 }
+nav ul li a:visited {
+  color: white;
+}
+
 nav ul li:hover {
   background-color: red;
   cursor: pointer;
@@ -47,6 +57,25 @@ a {
 }
 .details {
   max-width: 100%;
+}
+.car_display {
+  display: flex;
+  gap:30px;
+}
+.car_display div {
+  border: 1px solid black;
+  padding: 20px;
+
+}
+.car_display {
+  flex-direction: column;
+}
+.car_display h2 {
+  margin-bottom: 30px;
+}
+.car_display p {
+  font-size: 20px;
+  margin: 20px 0px;
 }
 #upgrades {
   display: grid;
@@ -97,6 +126,29 @@ nav li {
  color: white  ;
   margin: 0 auto;
  
+}
+main h1 {
+  margin: 40px 0px;
+}
+#inv-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  list-style: none;
+  padding-inline-start: 0;
+}
+#inv-display a {
+  color: black;
+}
+#inv-display li {
+  border: 1px solid black;
+  padding: 10px;
+  max-width: 220px;
+}
+#inv-display li img {
+  width: 200px;
+  height: 150px;
+  object-fit: cover;
 }
 .bannerContent h2 {
   text-align: left;
@@ -159,6 +211,9 @@ footer {
   footer {
     max-width: 1200px;
     
+  }
+  .car_display {
+    flex-direction: row;
   }
   
 }
