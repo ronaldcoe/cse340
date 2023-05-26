@@ -31,6 +31,21 @@ invCont.buildByCarId = async function (req, res, next) {
     nav,
     grid,
   })
+
+  
 }
+
+
+invCont.triggerError = (req, res, next) => {
+  try {
+    // Perform any necessary operations here
+
+    // Throw an intentional error to trigger a 500-type error
+    throw new Error('Intentional error');
+  } catch (error) {
+    // Pass the error to the error handling middleware
+    next(error);
+  }
+};
 
 module.exports = invCont

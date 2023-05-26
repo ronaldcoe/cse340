@@ -171,6 +171,11 @@ footer {
   margin: 60px auto;
   padding: 10px;
 }
+.error {
+  margin: 0 auto;
+  width: fit-content;
+  text-align: center;
+}
 
 @media screen and (min-width:840px) {
   #wrapper {
