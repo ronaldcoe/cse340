@@ -150,6 +150,11 @@ main h1 {
   height: 150px;
   object-fit: cover;
 }
+.car_display img {
+  width: 500px;
+  height: 400px;
+  object-fit: cover;
+}
 .bannerContent h2 {
   text-align: left;
   font-size: 20px;

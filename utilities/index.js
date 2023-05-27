@@ -66,7 +66,7 @@ Util.buildByCarId = async function(data) {
     <p><b>Price: $${new Intl.NumberFormat('en-US').format(data[0].inv_price)}</b></p>
     <p><b>Description:</b> ${data[0].inv_description}</p>
     <p><b>Color:</b> ${data[0].inv_color}</p>
-    <p><b>Miles:</b> ${data[0].inv_miles}<p></div></div>
+    <p><b>Miles:</b> ${new Intl.NumberFormat('en-US').format(data[0].inv_miles)}<p></div></div>
     `
  
   } else {
