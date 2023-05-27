@@ -19,6 +19,7 @@ body {
 }
 nav ul {
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   background-color: rgb(0, 0, 0);
   padding: 0;
@@ -151,7 +152,7 @@ main h1 {
   object-fit: cover;
 }
 .car_display img {
-  width: 500px;
+  max-width: 500px;
   height: 400px;
   object-fit: cover;
 }
@@ -187,7 +188,9 @@ footer {
     max-width: 1200px;
     margin: 0 auto;
   }
-  
+  nav ul {
+    flex-direction: row;
+  }
   .details {
     grid-column: 1/2;
     grid-row: 1/2;
