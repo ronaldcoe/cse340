@@ -18,11 +18,11 @@
         </label>
         <label>
           Make
-          <input type="text" name="inv_make"  required pattern="[A-Za-z]+" minlength="3" value="<%= locals.inv_make %>">
+          <input type="text" name="inv_make" placeholder="Min of 3 characters" required pattern="[A-Za-z]+" minlength="3" value="<%= locals.inv_make %>">
         </label>
         <label>
           Model
-          <input type="text" name="inv_model"  required minlength="3" value="<%= locals.inv_model %>">
+          <input type="text" name="inv_model" placeholder="Min of 3 characters" required minlength="3" value="<%= locals.inv_model %>">
         </label>
         <label>
           Description
@@ -38,15 +38,15 @@
         </label>
         <label>
           Price
-          <input type="text"  required name="inv_price" pattern="[0-9]+(\.[0-9]+)?"  value="<%= locals.inv_price %>">
+          <input type="text" placeholder="decimal or integer" required name="inv_price" pattern="[0-9]+(\.[0-9]+)?"  value="<%= locals.inv_price %>">
         </label>
         <label>
           Year
-          <input type="text"  required name="inv_year" inputmode="numeric" minlength="4" pattern="[0-9]*"  value="<%= locals.inv_price %>">
+          <input type="text"  placeholder="4-digit year" required name="inv_year" inputmode="numeric" minlength="4" pattern="[0-9]*"  value="<%= locals.inv_price %>">
         </label>
         <label>
           Miles
-          <input type="text"  required name="inv_miles" inputmode="numeric" pattern="[0-9]*"  value="<%= locals.inv_miles %>">
+          <input type="text" placeholder="digits only" required name="inv_miles" inputmode="numeric" pattern="[0-9]*"  value="<%= locals.inv_miles %>">
         </label>
         <label>
           Color

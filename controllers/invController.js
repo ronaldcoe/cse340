@@ -145,7 +145,7 @@ invCont.createInventory = async function (req, res) {
     let select = await utilities.buildSelectInv()
     req.flash(
       "notice",
-      `Congratulations, you\'re created the ${inv_model} classification.`
+      `Congratulations, you added the ${inv_year} ${inv_make} ${inv_model} to the inventory.`
     )
     res.status(201).render("inventory/add-inventory", {
       title: "New Vehicle",
