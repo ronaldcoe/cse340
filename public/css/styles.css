@@ -202,6 +202,7 @@ form input, textarea, select {
   padding: 10px;
   margin-top: 10px;
   width: 100%;
+  border: 1px solid black;
 }
 
 
@@ -236,14 +237,14 @@ li {
 
 }
 .errors li {
-  background-color: #ffe2e2;
+  background-color: #ffffff;
   border: 1px solid red;
   border-radius: 5px;
-  color: red;
+  color: #eb1313;
   padding: 5px;
   width: fit-content;
   text-align: left;
-  font-size: 10px;
+  font-size: 14px;
   margin-bottom:10px;
 
 }

@@ -94,9 +94,9 @@ validate.loginRules = () => {
     body("account_password")
     .trim()
     .isStrongPassword({
-      minLength: 12,
+      minLength: 1,
     })
-    .withMessage("Password does not meet requirements."),
+    .withMessage("Please enter password"),
   ]
 }
 
