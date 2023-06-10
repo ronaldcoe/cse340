@@ -16,6 +16,7 @@ invCont.buildByClassificationId = async function (req, res, next) {
     title: className + " vehicles",
     nav,
     grid,
+    errors: null,
   })
 }
 
@@ -25,17 +26,63 @@ invCont.buildByCarId = async function (req, res, next) {
   const grid = await utilities.buildByCarId(data)
   let nav = await utilities.getNav()
  
-  // console.log(className)
+ 
   res.render("./inventory/classification", {
     title: data[0].inv_year + " " + data[0].inv_make + " " + data[0].inv_model ,
     nav,
     grid,
+    errors: null,
+  })
+
+  
+}
+
+invCont.buildManagement = async function (req, res, next) {
+  
+ 
+  let nav = await utilities.getNav()
+ 
+ 
+  res.render("./inventory/dashboard", {
+    title: "Vehicle Management" ,
+    nav,
+    errors: null,
+  })
+
+  
+}
+
+invCont.builNewClassification = async function (req, res, next) {
+  
+ 
+  let nav = await utilities.getNav()
+ 
+ 
+  res.render("./inventory/add-classification", {
+    title: "New Classification" ,
+    nav,
+    errors: null,
   })
 
   
 }
 
 
+invCont.builNewInventory = async function (req, res, next) {
+  
+ 
+  let nav = await utilities.getNav()
+  let select = await utilities.buildSelectInv()
+ 
+  res.render("./inventory/add-inventory", {
+    title: "New Vehicle" ,
+    nav,
+    select,
+    errors: null,
+  })
+
+  
+}
 invCont.triggerError = (req, res, next) => {
   try {
 
@@ -45,5 +92,76 @@ invCont.triggerError = (req, res, next) => {
     next(error);
   }
 };
+
+// Handle New Classification
+
+invCont.createClassification = async function (req, res) {
+  
+  const { classification_name } = req.body
+
+
+  const classResult = await invModel.createClassification(
+    classification_name
+  )
+
+
+  if (classResult) {
+    let nav = await utilities.getNav()
+    req.flash(
+      "notice",
+      `Congratulations, you\'re created the ${classification_name} classification.`
+    )
+    res.status(201).render("inventory/add-classification", {
+      title: "New Classification",
+      nav,
+      errors:null,
+    })
+  } else {
+    req.flash("notice", "Sorry, the new classification failed.")
+    res.status(501).render("inventory/add-classification", {
+      title: "New Classification",
+      nav,
+      errors
+    })
+  }
+}
+
+
+
+// Handle New Inventory
+
+invCont.createInventory = async function (req, res) {
+  
+  const { classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color } = req.body
+
+
+  const classResult = await invModel.createInventory(
+    classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color
+  )
+
+
+  if (classResult) {
+    let nav = await utilities.getNav()
+    let select = await utilities.buildSelectInv()
+    req.flash(
+      "notice",
+      `Congratulations, you\'re created the ${inv_model} classification.`
+    )
+    res.status(201).render("inventory/add-inventory", {
+      title: "New Vehicle",
+      nav,
+      errors:null,
+      select
+    })
+  } else {
+    req.flash("notice", "Sorry, the new classification failed.")
+    res.status(501).render("inventory/add-inventory", {
+      title: "New Vehicle",
+      nav,
+      errors,
+      select
+    })
+  }
+}
 
 module.exports = invCont

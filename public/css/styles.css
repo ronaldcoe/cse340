@@ -114,7 +114,7 @@ nav li {
   cursor: pointer;
   margin: 10px auto;
 }
-.banner h2 {
+.banner h1 {
   font-size: 40px;
   text-align: center;
   padding-top: 20px;
@@ -154,7 +154,7 @@ main h1 {
 .car_display img {
   max-width: 500px;
   height: 400px;
-  object-fit: cover;
+  object-fit: contain;
 }
 .bannerContent h2 {
   text-align: left;
@@ -181,6 +181,71 @@ footer {
   margin: 0 auto;
   width: fit-content;
   text-align: center;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  width: fit-content;
+  padding: 30px;
+  margin: 20px auto;
+}
+form label {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+form input, textarea, select {
+  padding: 10px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+
+input:required:invalid, input:focus:invalid, textarea:required:invalid {
+  background-color: rgb(255, 174, 174);
+ }
+ input:required:valid, textarea:required:valid {
+  background-color: rgb(191, 255, 191);
+ }
+button {
+  padding: 10px;
+  color: white;
+  border: none;
+  background-color: black;
+  cursor: pointer;
+}
+.container_mng {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.btn_mng {
+  padding: 10px;
+  color: white;
+  border: none;
+  background-color: black;
+  cursor: pointer;
+  width: fit-content;
+}
+li {
+  list-style: none;
+
+}
+.errors li {
+  background-color: #ffe2e2;
+  border: 1px solid red;
+  border-radius: 5px;
+  color: red;
+  padding: 5px;
+  width: fit-content;
+  text-align: left;
+  font-size: 10px;
+  margin-bottom:10px;
+
 }
 
 @media screen and (min-width:840px) {

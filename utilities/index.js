@@ -6,6 +6,7 @@ const Util = {}
  ************************** */
 Util.getNav = async function (req, res, next) {
   let data = await invModel.getClassifications()
+  console.log(data.rows)
   let list = "<ul>"
   list += '<li><a href="/" title="Home page">Home</a></li>'
   data.rows.forEach((row) => {
@@ -74,6 +75,19 @@ Util.buildByCarId = async function(data) {
   }
   return grid
 }
+
+Util.buildSelectInv = async function() {
+  let data = await invModel.getClassifications()
+  let select = '<select name="classification_id" required>'
+  select += '<option value="">Select a Classification</option>'
+  data.rows.forEach((row) => {
+    select += `<option value="${row.classification_id}">${row.classification_name}</option>`
+  })
+  select += "</select>"
+  return select
+}
+
+
 
 
 /* ****************************************
