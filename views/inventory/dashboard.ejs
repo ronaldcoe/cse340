@@ -1,7 +1,13 @@
 <!-- The content heading -->
 <% if (title) { %>
     <h1><%= title %></h1>
+    <%- messages() %>
     <div class="container_mng">
+      <h2>Manage Inventory</h2>
+      <p>Select a classification from the list to see the items belonging to the classification.</p>
+      <%- classificationSelect %>
+      <table id="inventoryDisplay"></table>
+      <noscript>JavaScript must be enabled to use this page.</noscript>
       <a class="btn_mng" href="/inv/add-classification">Add New Classification</a> <br>
       <a class="btn_mng"  href="/inv/add-inventory">Add New Vehicle</a>
     </div>
@@ -11,3 +17,4 @@
 
 <%# messages() %>
 
+<script src="../../js/inventory.js" defer></script>

@@ -1,5 +1,7 @@
 const invModel = require("../models/inventory-model")
 const Util = {}
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
 /* ************************
  * Constructs the nav HTML unordered list
@@ -76,12 +78,12 @@ Util.buildByCarId = async function(data) {
   return grid
 }
 
-Util.buildSelectInv = async function() {
+Util.buildSelectInv = async function(optionSelected) {
   let data = await invModel.getClassifications()
   let select = '<select name="classification_id" required>'
   select += '<option value="">Select a Classification</option>'
   data.rows.forEach((row) => {
-    select += `<option value="${row.classification_id}">${row.classification_name}</option>`
+    select += `<option value="${row.classification_id}" ${row.classification_id === Number(optionSelected)? 'selected':''}>${row.classification_name}</option>`
   })
   select += "</select>"
   return select
@@ -98,5 +100,73 @@ Util.buildSelectInv = async function() {
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
 
+
+
+
+/* ****************************************
+* Middleware to check token validity
+**************************************** */
+Util.checkJWTToken = (req, res, next) => {
+  if (req.cookies.jwt) {
+   jwt.verify(
+    req.cookies.jwt,
+    process.env.ACCESS_TOKEN_SECRET,
+    function (err, accountData) {
+     if (err) {
+      req.flash("Please log in")
+      res.clearCookie("jwt")
+      return res.redirect("/account/login")
+     }
+     res.locals.accountData = accountData
+     res.locals.loggedin = 1
+     next()
+    })
+  } else {
+   next()
+  }
+}
+
+/* ****************************************
+ *  Check Login
+ * ************************************ */
+Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    next()
+  } else {
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
+  }
+}
+
+
+// Check account type 
+Util.checkAccountType = (req, res, next) => {
+
+  // Check if the account type is 'Employee' or 'Admin'
+  if (res.locals.loggedin) {
+    const account_type = res.locals.accountData.account_type; // Get the account type from the payload
+
+    if (account_type === 'Employee' || account_type === 'Admin') {
+      next(); // continue
+    } else {
+      req.flash("notice", "You don't have permission to access this page")
+      res.status(403).redirect("/account/login")
+    }
+  } else {
+      req.flash("notice", "You don't have permission to access this page")
+      res.status(403).redirect("/account/login")
+  }
+}
+
+Util.buildClassificationList = async (optionSelected) => {
+  let data = await invModel.getClassifications()
+  let select = '<select name="classification_id" id="classificationList" required>'
+  select += '<option value="">Select a Classification</option>'
+  data.rows.forEach((row) => {
+    select += `<option value="${row.classification_id}" ${row.classification_id === Number(optionSelected)? 'selected':''}>${row.classification_name}</option>`
+  })
+  select += "</select>"
+  return select
+}
 
 module.exports = Util

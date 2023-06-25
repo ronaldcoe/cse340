@@ -4,7 +4,12 @@
 
     <body>
         <div id="wrapper">
-            <%- include('../partials/header') %>
+            <% if(locals.loggedin) { %>
+                <%- include('../partials/loggedInHeader') %>
+            <% } else { %>
+                <%- include('../partials/header') %>
+           <% } %>
+                
             <%- include('../partials/navigation') %>
 
             <main>

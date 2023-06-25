@@ -248,7 +248,43 @@ li {
   margin-bottom:10px;
 
 }
+#password-edit {
+  max-width: 400px;
+}
+#editForm {
+  min-width: 350px;
+  max-width: 400px;
 
+}
+#inventoryDisplay {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+#inventoryDisplay thead {
+  background-color: black;
+  color: white;
+}
+#inventoryDisplay tr:nth-child(even) {
+  background-color: #ccc;
+}
+#inventoryDisplay td {
+  border: 1px solid black;
+  padding: 20px;
+}
+#inventoryDisplay a {
+  background-color: black;
+  color: white;
+  padding: 10px;
+}
+.account_btn_container {
+  margin: 20px 0px;
+}
+.account_links {
+  background-color: black;
+  padding: 10px;
+  color: white;
+  
+}
 @media screen and (min-width:840px) {
   #wrapper {
     max-width: 1200px;

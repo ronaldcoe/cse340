@@ -1,0 +1,28 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <h2>Welcome <%- locals.accountData.account_firstname %></h2>
+    <p>You're logged in</p>
+    <p class="account_btn_container">
+        <a class="account_links" href="/account/edit-account/<%- locals.accountData.account_id %>">Edit Account Information</a>
+    </p>
+    <%} else {
+        res.redirect("/")
+    } %>
+
+    
+    <% if (locals.accountData.account_type === 'Admin' || locals.accountData.account_type === 'Employee') { %>
+        <h3>Inventory Management</h3>
+        <p class="account_btn_container">
+            <a class="account_links" href="/inv">Manage Inventory</a>
+        </p>
+      <% } %>
+
+    <% if (errors) { %>
+        <ul class="notice errors">
+       <% errors.array().forEach(error => { %>
+         <li><%= error.msg %></li>
+      <%  }) %>
+       </ul>
+      <% } %>
+    
+    <%- messages() %>

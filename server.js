@@ -14,9 +14,11 @@ const baseController = require("./controllers/baseController")
 const utilities = require("./utilities/")
 const session = require("express-session")
 const pool = require('./database/')
+const cookieParser = require("cookie-parser")
 app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout", "./layouts/layout")
+app.use(cookieParser())
 
 
 /* ***********************
@@ -32,6 +34,8 @@ app.use(session({
   saveUninitialized: true,
   name: 'sessionId',
 }))
+
+app.use(utilities.checkJWTToken)
 
 // Express Messages Middleware
 app.use(require('connect-flash')())
@@ -50,6 +54,15 @@ app.use(require("./routes/static"))
 app.get("/", utilities.handleErrors(baseController.buildHome))
 app.use("/inv", require("./routes/inventoryRoute"))
 app.use("/account", require("./routes/accountRoute"))
+
+app.get("/logout", (req, res) => {
+  res.clearCookie("jwt")
+
+  res.redirect("/")
+
+  }
+
+)
 
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {
