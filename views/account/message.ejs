@@ -27,7 +27,7 @@
         </form>
         <form action="/account/message/archive-message" method="post" class="normalForm">
             <input type="hidden" name="message_id" value="<%= data[0].message_id %>">
-            <button><a href="/">Archive message</a></button>
+            <button type="submit">Archive message</a></button>
         </form>
     <%} %>
     <button><a href="/account/message/delete/<%= data[0].message_id %>">Delete message</a></button>
