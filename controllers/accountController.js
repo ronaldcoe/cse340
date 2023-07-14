@@ -9,7 +9,8 @@ require("dotenv").config()
 * *************************************** */
 
 async function buildLogin(req, res, next) {
- 
+    // const account_id = req.locals.accountData.account_id
+
     let nav = await utilities.getNav()
     req.flash("notice", "All fields are required.")
     res.render("account/login", {
@@ -34,10 +35,18 @@ async function buildRegister(req, res, next) {
 * *************************************** */
 async function builAccount(req, res, next) {
   let nav = await utilities.getNav()
+  const jwtToken = req.cookies.jwt;
+  const decodedPayload = jwt.verify(jwtToken, process.env.ACCESS_TOKEN_SECRET,);
+  
+  
+  
+  const countUnread = await accountModel.getUnreadMessageCount(decodedPayload.account_id)
   res.render("account/account", {
     title:"Account Management",
     nav,
     errors:null,
+    countUnread:countUnread,
+   
   })
 }
 
@@ -143,7 +152,7 @@ async function updateAccountView(req, res) {
   const account_id = parseInt(req.params.accountId)
   let nav = await utilities.getNav()
   const data = await accountModel.getAccountById(account_id)
-  console.log(data)
+
   res.render("./account/edit-account",
     {
       title: "Edit Account",
@@ -197,7 +206,7 @@ async function updateAccount(req, res) {
 
 async function updatePassword(req, res) {
   const { account_password, account_id } = req.body
-  console.log(account_password, "password")
+
   let nav = await utilities.getNav()
   let hashedPassword = await bcrypt.hashSync(account_password, 10)
   const accountPassword = await accountModel.updatePassword(account_id,hashedPassword)
@@ -229,4 +238,290 @@ async function updatePassword(req, res) {
 
 }
 
-module.exports = {buildLogin, buildRegister, registerAccount, builAccount, accountLogin, updateAccountView, updateAccount, updatePassword}
+
+
+// Inbox
+
+
+/* ****************************************
+ * Show inbox
+ * ************************************ */
+async function inboxView(req, res) {
+
+  let nav = await utilities.getNav()
+  
+  const jwtToken = req.cookies.jwt;
+  const decodedPayload = jwt.verify(jwtToken, process.env.ACCESS_TOKEN_SECRET,);
+    
+  const data = await accountModel.getMessagesById(decodedPayload.account_id)
+  const countArchived = await accountModel.getArchivedMessageCount(decodedPayload.account_id)
+
+  let table = await utilities.buildMessageTable(data)
+  res.render("./account/inbox",
+    {
+      title: "Inbox",
+      nav,
+      table,
+      errors:null,
+      countArchived
+    }
+  )
+
+}
+
+/* ****************************************
+ *  Process the new message view
+ * ************************************ */
+async function newMessageView(req, res) {
+
+  let nav = await utilities.getNav()
+  const data = await accountModel.getAccounts()
+
+  let select = await utilities.buildToSelect(data)
+  res.status(201).render("./account/new-message",
+    {
+      title: "New message",
+      nav,
+      errors:null,
+      select
+    }
+  )
+
+}
+
+/* ****************************************
+ *  Process the send message
+ * ************************************ */
+async function sendNewMessage(req, res) {
+  const {message_subject, message_body, message_to, message_from} = req.body
+  let nav = await utilities.getNav()
+
+ 
+
+
+  const messageResult = await accountModel.sendNewMessage(
+    message_subject, message_body, message_body, message_to, message_from
+  ) 
+    if(messageResult) {
+
+      const jwtToken = req.cookies.jwt;
+      const decodedPayload = jwt.verify(jwtToken, process.env.ACCESS_TOKEN_SECRET,);
+      const data = await accountModel.getMessagesById(decodedPayload.account_id)
+
+      const countArchived = await accountModel.getArchivedMessageCount(decodedPayload.account_id)
+      let table = await utilities.buildMessageTable(data)
+    
+      req.flash("notice", "Message sent")
+      res.status(201).render("./account/inbox", {
+        title:"Inbox",
+        nav,
+        errors:null,
+        table:table,
+        countArchived
+        
+      })
+    }
+}
+
+
+  // Show individual message
+  async function showMessage(req, res) {
+    let nav = await utilities.getNav()
+    const message_id = parseInt(req.params.messageId)
+    const data = await accountModel.getMessageById(message_id)
+    const archived = data[0].message_archived
+    console.log(archived)
+    res.status(201).render("./account/message",
+      {
+        title: "Message",
+        nav,
+        errors:null,
+        data,
+        archived
+      }
+    )
+  
+}
+
+  // Show delete confirmation
+  async function deleteMessageById(req, res) {
+    let nav = await utilities.getNav()
+    const {message_id} = req.body
+    let messageSendResult = await accountModel.deleteMessageById(message_id)
+
+    if (messageSendResult) {
+      const jwtToken = req.cookies.jwt;
+      const decodedPayload = jwt.verify(jwtToken, process.env.ACCESS_TOKEN_SECRET,);
+      const data = await accountModel.getMessagesById(decodedPayload.account_id)
+      const countArchived = await accountModel.getArchivedMessageCount(decodedPayload.account_id)
+      let table = await utilities.buildMessageTable(data)
+      
+      req.flash("notice", "Message was deleted")
+      res.status(201).render("./account/inbox",
+        {
+          title: "Inbox",
+          nav,
+          errors:null,
+          table:table,
+          countArchived:countArchived
+        }
+      )
+    }
+  
+}
+
+  // Show delete confirmation
+  async function deleteConfirmationView(req, res) {
+    let nav = await utilities.getNav()
+
+    res.status(201).render("./account/delete-message",
+      {
+        title: "Message",
+        nav,
+        errors:null,
+      
+      }
+    )
+  
+}
+
+
+// Reply message
+
+async function replyView(req, res) {
+  let nav = await utilities.getNav()
+  const message_id = parseInt(req.params.messageId)
+  const data = await accountModel.getMessageById(message_id)
+
+  res.status(201).render("./account/reply",
+    {
+      title: "Reply",
+      nav,
+      errors:null,
+      message_id:message_id,
+      data:data
+    }
+  )
+
+}
+
+
+// Reply message
+
+async function sendReply(req, res) {
+  const {message_body, message_id, message_from, message_to} = req.body
+
+  let nav = await utilities.getNav()
+  let replyResult = await accountModel.sendReply(message_body, message_id, message_from, message_to)
+  
+
+
+
+    if(replyResult) {
+
+      const jwtToken = req.cookies.jwt;
+      const decodedPayload = jwt.verify(jwtToken, process.env.ACCESS_TOKEN_SECRET,);
+      const data = await accountModel.getMessagesById(decodedPayload.account_id)
+      const countArchived = await accountModel.getArchivedMessageCount(decodedPayload.account_id)
+      
+      let table = await utilities.buildMessageTable(data)
+    
+      req.flash("notice", "Reply sent")
+      res.status(201).render("./account/inbox", {
+        title:"Inbox",
+        nav,
+        errors:null,
+        table:table,
+        countArchived
+      })
+    }
+}
+
+
+// Mark as read
+async function markAsRead(req, res) {
+  const {message_id} = req.body
+
+  let nav = await utilities.getNav()
+  let replyResult = await accountModel.markRead(message_id)
+
+
+
+    if(replyResult) {
+
+      const jwtToken = req.cookies.jwt;
+      const decodedPayload = jwt.verify(jwtToken, process.env.ACCESS_TOKEN_SECRET,);
+      const data = await accountModel.getMessagesById(decodedPayload.account_id)
+      const countArchived = await accountModel.getArchivedMessageCount(decodedPayload.account_id)
+
+      
+      let table = await utilities.buildMessageTable(data)
+    
+      req.flash("notice", "Message marked as read")
+      res.status(201).render("./account/inbox", {
+        title:"Inbox",
+        nav,
+        errors:null,
+        table:table,
+        countArchived:countArchived
+      })
+    }
+}
+
+
+
+/* ****************************************
+ * Show archived
+ * ************************************ */
+async function buildArchived(req, res) {
+
+  let nav = await utilities.getNav()
+  
+  const jwtToken = req.cookies.jwt;
+  const decodedPayload = jwt.verify(jwtToken, process.env.ACCESS_TOKEN_SECRET,);
+  const data = await accountModel.getMessagesByIdArchived(decodedPayload.account_id)
+  console.log(data)
+
+  let table = await utilities.buildMessageTable(data)
+  res.render("./account/archived",
+    {
+      title: "Inbox",
+      nav,
+      errors:null,
+      table
+    }
+  )
+
+}
+
+
+
+
+// Archive message by id
+ // Show delete confirmation
+ async function archiveMessageById(req, res) {
+  let nav = await utilities.getNav()
+  const {message_id} = req.body
+  let messageSendResult = await accountModel.archiveMessageById(message_id)
+
+  if (messageSendResult) {
+    const jwtToken = req.cookies.jwt;
+    const decodedPayload = jwt.verify(jwtToken, process.env.ACCESS_TOKEN_SECRET,);
+    const data = await accountModel.getMessagesById(decodedPayload.account_id)
+    const countArchived = await accountModel.getArchivedMessageCount(decodedPayload.account_id)
+    let table = await utilities.buildMessageTable(data)
+    
+    req.flash("notice", "Message was marked as Archived")
+    res.status(201).render("./account/inbox",
+      {
+        title: "Inbox",
+        nav,
+        errors:null,
+        table:table,
+        countArchived:countArchived
+      }
+    )
+  }
+
+}
+module.exports = {buildLogin, buildRegister, registerAccount, builAccount, accountLogin, updateAccountView, updateAccount, updatePassword, inboxView, newMessageView, sendNewMessage, showMessage, deleteConfirmationView, deleteMessageById, replyView, sendReply, markAsRead, buildArchived, archiveMessageById}

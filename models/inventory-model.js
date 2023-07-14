@@ -161,4 +161,7 @@ async function deleteInventory(
     throw error;
   }
 }
+
+
+
 module.exports = {getClassifications, getInventoryByClassificationId, getCarById, deleteInventory, updateInventory, createClassification, checkExistingClassification, createInventory};

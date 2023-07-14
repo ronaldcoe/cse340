@@ -235,5 +235,55 @@ validate.passwordUpdateRules = () => {
 
 
 
+/*  **********************************
+ *  New Message Validation Rules
+ * ********************************* */
+validate.newMessageRules = () => {
+  return [
+    
+    body("message_subject")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("Please provide a subject."),
+
+      body("message_body")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("Please provide a body."),
+  ]
+}
+
+
+
+  /* ******************************
+ * Check data and return errors or continue to new message
+ * ***************************** */
+  validate.checkMessageData = async (req, res, next) => {
+    const { message_subject, message_body, message_to } = req.body
+    let errors = []
+    errors = validationResult(req)
+
+
+    const data = await accountModel.getAccounts()
+
+    let select = await utilities.buildToSelect(data, message_to)
+
+    if (!errors.isEmpty()) {
+      let nav = await utilities.getNav()
+      res.render("account/new-message", {
+        errors,
+        title: "Log in",
+        nav,
+        select,
+        message_to,
+        message_subject,
+        message_body
+      })
+      return
+    }
+    next()
+  }
+
+
 
 module.exports = validate

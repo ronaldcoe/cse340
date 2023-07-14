@@ -25,7 +25,7 @@ router.post(
   )
 
 // Process the account update
-router.get("/edit-account/:accountId", utilities.handleErrors(accountController.updateAccountView))
+router.get("/edit-account/:accountId", utilities.checkLogin, utilities.handleErrors(accountController.updateAccountView))
 router.post("/edit-account/", 
             regValidate.updateRules(),
             regValidate.checkUpdateData,
@@ -38,5 +38,34 @@ router.post("/edit-password/",
             regValidate.checkPasswordData,
             utilities.handleErrors(accountController.updatePassword)
 )
+
+// Inbox
+router.get("/inbox/", utilities.checkLogin, utilities.handleErrors(accountController.inboxView))
+
+router.get("/new-message", utilities.checkLogin, utilities.handleErrors(accountController.newMessageView))
+
+router.post("/new-message",
+            regValidate.newMessageRules(),
+            regValidate.checkMessageData,
+            utilities.handleErrors(accountController.sendNewMessage)
+)
+router.get("/message/:messageId", utilities.checkLogin, utilities.handleErrors(accountController.showMessage))
+
+// Delete message confirmation
+router.get("/message/delete/:messageId", utilities.checkLogin, utilities.handleErrors(accountController.deleteConfirmationView))
+
+
+router.post("/message/delete", utilities.handleErrors(accountController.deleteMessageById))
+
+
+router.post("/message/read", utilities.handleErrors(accountController.markAsRead))
+// Archive
+router.get("/archive", utilities.checkLogin, utilities.handleErrors(accountController.buildArchived))
+router.post("/message/archive-message", utilities.checkLogin, utilities.handleErrors(accountController.archiveMessageById))
+// Reply message
+
+router.post("/message/reply", utilities.handleErrors(accountController.sendReply))
+router.get("/message/reply/:messageId", utilities.checkLogin, utilities.handleErrors(accountController.replyView))
+
 
 module.exports = router

@@ -193,6 +193,12 @@ form {
   padding: 30px;
   margin: 20px auto;
 }
+.normalForm {
+  background-color: white;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+}
 form label {
   display: flex;
   flex-direction: column;
@@ -284,6 +290,44 @@ li {
   padding: 10px;
   color: white;
   
+}
+table {
+  margin-top: 50px;
+}
+table, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+thead {
+  background-color: black;
+  color: white;
+}
+td {
+  padding: 10px;
+}
+tr:nth-child(even) {
+  background-color: #ccc;
+}
+.message_btn {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+.message_btn hr{
+  margin-bottom: 20px;
+}
+.message_btn a{
+  color: white;
+}
+.notice {
+  padding-inline-start: 0;
+}
+.notice li {
+  background-color: rgb(233, 253, 233);
+  color: green;
+  width: fit-content;
+  padding: 10px;
+  margin: 10px;
 }
 @media screen and (min-width:840px) {
   #wrapper {

@@ -1,0 +1,35 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <%} else {
+        res.redirect("/")
+    } %>
+
+    <% if (errors) { %>
+        <ul class="notice errors">
+       <% errors.array().forEach(error => { %>
+         <li><%= error.msg %></li>
+      <%  }) %>
+       </ul>
+      <% } %>
+    
+    <%- messages() %>
+    <a href="/account/inbox">Go back to inbox</a>
+    <form id="newMessage" action="/account/new-message" method="post">
+        <label>
+            <span>To:</span>
+            <%- select %>
+        </label>
+        <label>
+            <span>Subject:</span>
+            <input type="text" id="subject" name="message_subject" placeholder="Subject" value="<%= locals.message_subject %>"required>
+        </label>
+        <label>
+            <span>Message:</span>
+            <textarea id="subject" name="message_body" required>
+<%= locals.message_body %>
+            </textarea>
+        </label>
+        <input type="hidden" name="message_from" value="<%- locals.accountData.account_id %>">
+        <button type="submit">Send Message</button>
+   
+    </form>

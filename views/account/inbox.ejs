@@ -1,0 +1,15 @@
+<% if (title) { %>
+    <h2><%- locals.accountData.account_firstname %> Inbox</h2>
+    <%- messages() %>
+    <p><a href="/account/new-message">Create a new message</a></p>
+    <p><a href="/account/archive">View <%= countArchived %> archived messages</a></p>    
+    <div>
+        <%- table %>
+    </div>
+    
+    <%} else {
+        res.redirect("/")
+    } %>
+
+    
+

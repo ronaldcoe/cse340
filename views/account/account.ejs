@@ -1,5 +1,6 @@
 <% if (title) { %>
     <h1><%= title %></h1>
+    <%- messages() %>
     <h2>Welcome <%- locals.accountData.account_firstname %></h2>
     <p>You're logged in</p>
     <p class="account_btn_container">
@@ -15,6 +16,10 @@
         <p class="account_btn_container">
             <a class="account_links" href="/inv">Manage Inventory</a>
         </p>
+
+        <h2>Message Center</h2>
+        <p>You have <%= countUnread %> unread messages</p>
+        <p>Go to <a href="/account/inbox/">Inbox</a></p>
       <% } %>
 
     <% if (errors) { %>
@@ -25,4 +30,4 @@
        </ul>
       <% } %>
     
-    <%- messages() %>
+    

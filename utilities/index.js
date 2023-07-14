@@ -8,7 +8,7 @@ require("dotenv").config()
  ************************** */
 Util.getNav = async function (req, res, next) {
   let data = await invModel.getClassifications()
-  console.log(data.rows)
+
   let list = "<ul>"
   list += '<li><a href="/" title="Home page">Home</a></li>'
   data.rows.forEach((row) => {
@@ -166,6 +166,36 @@ Util.buildClassificationList = async (optionSelected) => {
     select += `<option value="${row.classification_id}" ${row.classification_id === Number(optionSelected)? 'selected':''}>${row.classification_name}</option>`
   })
   select += "</select>"
+  return select
+}
+
+// Bild message table
+Util.buildMessageTable = async function(dataMessage) {
+
+  let table = '<table>'
+  table += '<thead><th>Recieved</th><th>Subject</th><th>From</th><th>Read</th></thead>'
+  dataMessage.forEach((row) => {
+    table += '<tr>'
+    table += `<td>${row.message_created}</td> 
+              <td><a href="/account/message/${row.message_id}" >${row.message_subject}</a></td>
+              <td>${row.message_from}</td>
+              <td>${row.message_read}</td>
+              `
+  })
+  table += '</table>'
+  return table
+}
+
+
+// Build toSelect 
+Util.buildToSelect =  async function(data, message_to) {
+ 
+  let select = '<select name="message_to">'
+  data.forEach((row) => {
+
+    select += `<option value="${row.account_id}" ${message_to == row.account_id?"selected":""}>${row.account_firstname}</option>`
+  })
+  select += '</select>'
   return select
 }
 

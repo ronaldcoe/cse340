@@ -1,0 +1,39 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <%} else {
+        res.redirect("/")
+    } %>
+
+    <% if (errors) { %>
+        <ul class="notice errors">
+       <% errors.array().forEach(error => { %>
+         <li><%= error.msg %></li>
+      <%  }) %>
+       </ul>
+      <% } %>
+    
+    <%- messages() %>
+    <form id="newMessage" action="/account/message/reply" method="post">
+        <label>
+            <span>To:</span>
+            <input type="text" readonly name="message_to" id="message_to" value="<%= data[0].message_from %>">
+        </label>
+        <label>
+            <span>Subject:</span>
+            <input type="text" id="subject" name="message_subject" readonly placeholder="Subject" value="<%= data[0].message_subject %>" required>
+        </label>
+        <label>
+            <span>Message:</span>
+            <textarea id="body" autofocus name="message_body" required cols="50" rows="10">
+
+
+/////////// Prevoius Message /////////// 
+
+<%= data[0].message_body %></textarea>
+        </label>
+        <input type="hidden" name="message_id" value="<%= data[0].message_id %>">
+        <input type="hidden" name="message_from" value="<%- locals.accountData.account_id %>">
+        <input type="hidden" name="message_to" value="<%= data[0].from_id %>">
+        <button type="submit">Send Message</button>
+   
+    </form>

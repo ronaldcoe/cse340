@@ -187,11 +187,10 @@ invCont.getInventoryJSON = async (req, res, next) => {
 invCont.buildEditById = async function (req, res, next) {
   
   const car_id = parseInt(req.params.carID)
-  console.log("param", req.params.carID)
   let nav = await utilities.getNav()
   const data = await invModel.getCarById(car_id)
   let select = await utilities.buildSelectInv(data[0].classification_id)
-  console.log(data[0])
+
   const itemName = `${data[0].inv_make} ${data[0].inv_model}`
   res.render("./inventory/edit-inventory", {
     title: "Edit " + itemName ,
@@ -254,7 +253,6 @@ invCont.deleteConfirmation = async function (req, res) {
   
   
   const car_id = parseInt(req.params.carID)
-  console.log("param", req.params.carID)
   let nav = await utilities.getNav()
   const data = await invModel.getCarById(car_id)
 
